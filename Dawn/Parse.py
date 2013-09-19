@@ -14,18 +14,16 @@ class Dawn:
     # content extractor function
     def ret_ed_content(self, list_): #list of links
         for l in list_: #iterate over links
-             print l
              try:
                  page = BeautifulSoup(self.Open_Page(l)) #open link
         #find the title of editorial, and then clean the tags, and extract text
-                 i = bleach.clean(page.findAll("h1", {"class": "story-hed"})[0], tags=[], strip=True).strip() 
+                 title = bleach.clean(page.findAll("h1", {"class": "story-hed"})[0], tags=[], strip=True).strip() 
         #find the story content in div
                  divs = page.findAll("div", {"class": "row-fluid story-content"})
         #clean the div of tags
-                 k = bleach.clean(divs[0], tags=[], strip=True)
-                 u = k.encode('utf-8').strip()
+                 content = bleach.clean(divs[0], tags=[], strip=True).encode('utf-8').strip()
         #insert into database
-                 self.Insert_Into_DataBase("2013-03-22", i, u)
+                 self.Insert_Into_DataBase(self.Date, title, content)
         #write to file
                  #text_file = open('output.txt', 'w')
         #use unicode encoding
