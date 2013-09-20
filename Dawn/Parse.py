@@ -17,13 +17,15 @@ class Dawn:
              try:
                  page = BeautifulSoup(self.Open_Page(l)) #open link
         #find the title of editorial, and then clean the tags, and extract text
-                 title = bleach.clean(page.findAll("h1", {"class": "story-hed"})[0], tags=[], strip=True).strip() 
+                 title = bleach.clean(page.findAll("h1", {"class": "story-hed"})[0], tags=[], strip=True).strip().encode('utf-8')
         #find the story content in div
                  divs = page.findAll("div", {"class": "row-fluid story-content"})
         #clean the div of tags
-                 content = bleach.clean(divs[0], tags=[], strip=True).encode('utf-8').strip()
+                 content = bleach.clean(divs[0], tags=[], strip=True)
+                 content_1 = content.encode('utf-8', 'ignore').strip()
+                 
         #insert into database
-                 self.Insert_Into_DataBase(self.Date, title, content)
+                 self.Insert_Into_DataBase(self.Date, title, content_1)
         #write to file
                  #text_file = open('output.txt', 'w')
         #use unicode encoding
@@ -102,8 +104,8 @@ class Dawn:
          
 #main
 if __name__ == '__main__': 
-
-    d = Dawn('2013-09-10', '2013-09-10', '2013-09-12')
+ 
+    d = Dawn('2013-09-10', '2013-09-10', '2013-09-04')
     d.demo()    
 
 
